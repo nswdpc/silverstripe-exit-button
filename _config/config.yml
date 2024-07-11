@@ -1,0 +1,15 @@
+---
+Name: nswdpc-exit-button
+---
+# base level config
+NSWDPC\ExitButton\Models\ExitButton:
+  default_url: 'https://www.google.com/'
+---
+Name: nswdpc-exit-button-element
+Only:
+  moduleexists: 'dnadesign/silverstripe-elemental'
+---
+# elemental
+Page:
+  extensions:
+    ExitButton: 'NSWDPC\ExitButton\Extensions\PageSettingsExtension'
