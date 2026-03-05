@@ -49,6 +49,19 @@ class ExitButton extends ViewableData implements TemplateGlobalProvider {
      */
     private static string $default_label = 'Exit now';
 
+    private bool $useEsc = true;
+
+    public function setUseEsc(bool $use): self
+    {
+        $this->useEsc = $use;
+        return $this;
+    }
+
+    public function getUseEsc(): bool
+    {
+        return $this->useEsc;
+    }
+
     /**
      * Set exit URL
      */
@@ -125,7 +138,8 @@ SCRIPT;
         $data = ArrayData::create([
             'Url' => DBField::create_field(DBVarchar::class, $this->getExitUrl()),
             'Id' => DBField::create_field(DBVarchar::class, $id),
-            'Label' => DBField::create_field(DBVarchar::class, $this->getLabel())
+            'Label' => DBField::create_field(DBVarchar::class, $this->getLabel()),
+            'UseEscVal' => $this->getUseEsc() ? "1" : "0"
         ]);
         return $this->customise($data)->renderWith(static::class);
     }
