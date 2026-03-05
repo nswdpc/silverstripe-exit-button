@@ -21,25 +21,31 @@ class ExitButton extends ViewableData implements TemplateGlobalProvider {
      * @var string
      * The default URL to open when exit event is hit
      */
-    private static $default_url = 'https://www.google.com/';
+    private static string $default_url = 'https://www.google.com/';
 
     /**
      * @var string
      * The per instance URL to open when exit event is hit
      */
-    private $exitUrl = 'https://www.google.com/';
+    private string $exitUrl = 'https://www.google.com/';
 
     /**
      * @var string
      * id attribute value for this button
      */
-    private $id = '';
+    private string $id = '';
 
     /**
      * @var string
      * Button label
      */
-    private $label = '';
+    private string $label = '';
+
+    /**
+     * @var string
+     * Button label
+     */
+    private static string $default_label = 'Exit now';
 
     /**
      * Set exit URL
@@ -52,8 +58,8 @@ class ExitButton extends ViewableData implements TemplateGlobalProvider {
     /**
      * Get exit URL or use default
      */
-    public function getExitUrl() : ?string {
-        return $this->exitUrl ?? static::config()->get('default_url');
+    public function getExitUrl() : string {
+        return $this->exitUrl !== '' ? $this->exitUrl : static::config()->get('default_url');
     }
 
     /**
@@ -83,7 +89,18 @@ class ExitButton extends ViewableData implements TemplateGlobalProvider {
      * Get label or use default
      */
     public function getLabel() : string {
-        return $this->label !== '' ? $this->label : _t('ExitButton.EXIT_BUTTON_LABEL', 'Exit this page');
+        return $this->label !== '' ? $this->label : $this->getDefaultLabel();
+    }
+
+    public function getDefaultLabel(): string
+    {
+        $default = static::config()->get('default_label');
+        if($default != '') {
+            $default = _t('ExitButton.EXIT_BUTTON_LABEL_DEFAULT', $default);
+        } else {
+            $default = _t('ExitButton.EXIT_BUTTON_LABEL', 'Exit now');
+        }
+        return $default;
     }
 
     /**
