@@ -109,8 +109,7 @@ class ExitButton extends ViewableData implements TemplateGlobalProvider {
     public function forTemplate() {
         $id = $this->getId();
         Requirements::javascript('nswdpc/silverstripe-exit-button:client/static/js/exitbutton.js');
-        Requirements::customScript(
-<<<SCRIPT
+        $loaderScript = <<<SCRIPT
 window.addEventListener(
     'DOMContentLoaded',
     function(e) {
@@ -118,8 +117,8 @@ window.addEventListener(
         eb.init(document.getElementById('{$id}')).handle();
     }
 );
-SCRIPT
-        );
+SCRIPT;
+        Requirements::customScript($loaderScript,  'exit-button-loader-for-' . $id);
         $data = ArrayData::create([
             'Url' => $this->getExitUrl(),
             'Id' => $id,
