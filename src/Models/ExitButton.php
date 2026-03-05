@@ -74,7 +74,8 @@ class ExitButton extends ViewableData implements TemplateGlobalProvider {
      * Get id attribute value or create one
      */
     public function getId() : string {
-        return $this->id !== '' ? $this->id : 'exit-button-' . bin2hex(random_bytes(4));
+        $id = \SilverStripe\Core\Convert::raw2htmlid($this->id);
+        return $id !== '' ? $id : 'exit-button-' . bin2hex(random_bytes(4));
     }
 
     /**
