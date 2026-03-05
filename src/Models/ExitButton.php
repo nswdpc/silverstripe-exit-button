@@ -6,6 +6,8 @@ use DNADesign\Elemental\Models\BaseElement;
 use SilverStripe\Control\Controller;
 use SilverStripe\Forms\TextareaField;
 use SilverStripe\Forms\TextField;
+use SilverStripe\ORM\FieldType\DBField;
+use SilverStripe\ORM\FieldType\DBVarchar;
 use SilverStripe\View\ArrayData;
 use SilverStripe\View\Requirements;
 use SilverStripe\View\TemplateGlobalProvider;
@@ -121,9 +123,9 @@ window.addEventListener(
 SCRIPT;
         Requirements::customScript($loaderScript,  'exit-button-loader-for-' . $id);
         $data = ArrayData::create([
-            'Url' => $this->getExitUrl(),
-            'Id' => $id,
-            'Label' => $this->getLabel()
+            'Url' => DBField::create_field(DBVarchar::class, $this->getExitUrl()),
+            'Id' => DBField::create_field(DBVarchar::class, $id),
+            'Label' => DBField::create_field(DBVarchar::class, $this->getLabel())
         ]);
         return $this->customise($data)->renderWith(static::class);
     }
