@@ -47,5 +47,3 @@ After:
 NSWDPC\ExitButton\Models\ExitButton:
   default_url: 'https://exit.example.com/'
 ```
-
-## ASgh
