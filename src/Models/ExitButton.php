@@ -132,12 +132,7 @@ SCRIPT;
      * @inheritdoc
      */
     public static function get_global_exit_button() {
-        $controller = Controller::curr();
-        $enabled = false;
-        if($controller && $page = $controller->data()) {
-            $enabled = $page->hasField('EnableExitButton') && $page->EnableExitButton == 1;
-        }
-        if($enabled) {
+        if(static::has_global_exit_button()) {
             return static::create()->setId('global-exit-button')->forTemplate();
         } else {
             return null;
@@ -147,10 +142,23 @@ SCRIPT;
     /**
      * @inheritdoc
      */
+    public static function has_global_exit_button() {
+        $controller = Controller::curr();
+        if($controller && $page = $controller->data()) {
+            return $page->hasField('EnableExitButton') && $page->EnableExitButton == 1;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * @inheritdoc
+     */
      public static function get_template_global_variables()
      {
          return [
-             'GlobalExitButton' => 'get_global_exit_button'
+             'GlobalExitButton' => 'get_global_exit_button',
+             'HasGlobalExitButton' => 'has_global_exit_button'
          ];
      }
 
