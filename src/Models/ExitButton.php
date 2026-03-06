@@ -2,10 +2,8 @@
 
 namespace NSWDPC\ExitButton\Models;
 
-use DNADesign\Elemental\Models\BaseElement;
+use SilverStripe\CMS\Controllers\ContentController;
 use SilverStripe\Control\Controller;
-use SilverStripe\Forms\TextareaField;
-use SilverStripe\Forms\TextField;
 use SilverStripe\ORM\FieldType\DBField;
 use SilverStripe\ORM\FieldType\DBVarchar;
 use SilverStripe\View\ArrayData;
@@ -17,8 +15,8 @@ use SilverStripe\View\ViewableData;
  * Provides an exit button model
  * @author James
  */
-class ExitButton extends ViewableData implements TemplateGlobalProvider {
-
+class ExitButton extends ViewableData implements TemplateGlobalProvider
+{
     /**
      * @var string
      * The default URL to open when exit event is hit
@@ -65,7 +63,8 @@ class ExitButton extends ViewableData implements TemplateGlobalProvider {
     /**
      * Set exit URL
      */
-    public function setExitUrl(string $exitUrl) : self {
+    public function setExitUrl(string $exitUrl): self
+    {
         $this->exitUrl = $exitUrl;
         return $this;
     }
@@ -73,14 +72,16 @@ class ExitButton extends ViewableData implements TemplateGlobalProvider {
     /**
      * Get exit URL or use default
      */
-    public function getExitUrl() : string {
+    public function getExitUrl(): string
+    {
         return $this->exitUrl !== '' ? $this->exitUrl : static::config()->get('default_url');
     }
 
     /**
      * Set id attribute value
      */
-    public function setId(string $id) : self {
+    public function setId(string $id): self
+    {
         $this->id = $id;
         return $this;
     }
@@ -88,7 +89,8 @@ class ExitButton extends ViewableData implements TemplateGlobalProvider {
     /**
      * Get id attribute value or create one
      */
-    public function getId() : string {
+    public function getId(): string
+    {
         $id = \SilverStripe\Core\Convert::raw2htmlid($this->id);
         return $id !== '' ? $id : 'exit-button-' . bin2hex(random_bytes(4));
     }
@@ -96,7 +98,8 @@ class ExitButton extends ViewableData implements TemplateGlobalProvider {
     /**
      * Set label to display on button
      */
-    public function setLabel(string $label) : self {
+    public function setLabel(string $label): self
+    {
         $this->label = trim($label);
         return $this;
     }
@@ -104,25 +107,28 @@ class ExitButton extends ViewableData implements TemplateGlobalProvider {
     /**
      * Get label or use default
      */
-    public function getLabel() : string {
+    public function getLabel(): string
+    {
         return $this->label !== '' ? $this->label : $this->getDefaultLabel();
     }
 
     public function getDefaultLabel(): string
     {
         $default = static::config()->get('default_label');
-        if($default != '') {
+        if ($default != '') {
             $default = _t('ExitButton.EXIT_BUTTON_LABEL_DEFAULT', $default);
         } else {
             $default = _t('ExitButton.EXIT_BUTTON_LABEL', 'Exit now');
         }
+
         return $default;
     }
 
     /**
      * Return a rendered template for this model
      */
-    public function forTemplate() {
+    public function forTemplate()
+    {
         $id = $this->getId();
         Requirements::javascript('nswdpc/silverstripe-exit-button:client/static/js/exitbutton.js');
         $loaderScript = <<<SCRIPT
@@ -134,7 +140,7 @@ window.addEventListener(
     }
 );
 SCRIPT;
-        Requirements::customScript($loaderScript,  'exit-button-loader-for-' . $id);
+        Requirements::customScript($loaderScript, 'exit-button-loader-for-' . $id);
         $data = ArrayData::create([
             'Url' => DBField::create_field(DBVarchar::class, $this->getExitUrl()),
             'Id' => DBField::create_field(DBVarchar::class, $id),
@@ -147,8 +153,9 @@ SCRIPT;
     /**
      * @inheritdoc
      */
-    public static function get_global_exit_button() {
-        if(static::has_global_exit_button()) {
+    public static function get_global_exit_button()
+    {
+        if (static::has_global_exit_button()) {
             return static::create()->setId('global-exit-button')->forTemplate();
         } else {
             return null;
@@ -158,9 +165,10 @@ SCRIPT;
     /**
      * @inheritdoc
      */
-    public static function has_global_exit_button() {
+    public static function has_global_exit_button()
+    {
         $controller = Controller::curr();
-        if($controller && $page = $controller->data()) {
+        if ($controller && ($controller instanceof ContentController || method_exists($controller, 'data')) && $page = $controller->data()) {
             return $page->hasField('EnableExitButton') && $page->EnableExitButton == 1;
         } else {
             return false;
@@ -170,13 +178,13 @@ SCRIPT;
     /**
      * @inheritdoc
      */
-     public static function get_template_global_variables()
-     {
-         return [
-             'GlobalExitButton' => 'get_global_exit_button',
-             'HasGlobalExitButton' => 'has_global_exit_button'
-         ];
-     }
+    public static function get_template_global_variables()
+    {
+        return [
+            'GlobalExitButton' => 'get_global_exit_button',
+            'HasGlobalExitButton' => 'has_global_exit_button'
+        ];
+    }
 
 
 }
