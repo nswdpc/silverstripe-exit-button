@@ -127,6 +127,7 @@ class ExitButton extends ModelData implements TemplateGlobalProvider
     /**
      * Return a rendered template for this model
      */
+    #[\Override]
     public function forTemplate(): string
     {
         $id = $this->getId();

@@ -8,7 +8,7 @@ use SilverStripe\Core\Extension;
 /**
  * Add field for enabling exit button
  * @property bool $EnableExitButton
- * @extends \SilverStripe\ORM\DataExtension<static>
+ * @extends \SilverStripe\Core\Extension<static>
  */
 class PageSettingsExtension extends Extension
 {
