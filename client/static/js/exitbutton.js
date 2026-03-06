@@ -19,14 +19,7 @@ class ExitButton {
       throw 'No button defined';
     }
     let _self = this;
-    window.addEventListener(
-      'keydown',
-      function(e) {
-        if(e.keyCode == 27) {
-          _self.doExit()
-        }
-      }
-    );
+    this.handleUseEscape();
     this.exitButton.addEventListener(
       'click',
       function(e) {
@@ -35,6 +28,33 @@ class ExitButton {
       }
     );
   }
+
+  handleUseEscape() {
+
+    if(this.exitButton.dataset.useEsc == '0') {
+      return false;
+    }
+
+    let _self = this;
+    let lastEscTime = 0;
+    let escWindow = 1000;
+    window.addEventListener(
+      'keydown',
+      function(e) {
+        if(e.key == 'Escape') {
+          let currentTime = Date.now();
+          let timeDiff = currentTime - lastEscTime;
+          if(lastEscTime > 0 && timeDiff > 0 && timeDiff < escWindow) {
+            lastEscTime = 0;
+            _self.doExit();
+          } else {
+            lastEscTime = currentTime;
+          }
+        }
+      }
+    );
+  }
+
   doExit(element) {
     let url = '';
     if(this.exitButton) {
@@ -43,7 +63,6 @@ class ExitButton {
     if(!url) {
       url = 'https://www.google.com/';
     }
-    console.log(url);
     window.open(url, '_blank');
     window.location.replace(url, "_newtab");
   }

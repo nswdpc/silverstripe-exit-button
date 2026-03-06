@@ -5,25 +5,29 @@ This Silverstripe module provides an "Exit Button" that can be included on any w
 ## What it does do
 
 + provides configurable templates
-+ provides configurable exit URL value
-+ multiple button support
-+ provdes a shortcode for adding the button to any HTML editor field
++ provides configurable exit URL, label and 'escape' functionality
++ page-level exit support
++ provides a shortcode for adding the button to any HTML editor field
 + replaces the location value
 + opens a configured website in a new tab
 
 ## What it doesn't do
 
-+ rewrite browser history
++ rewrite past browser history
 + invalidate a session on the site
+
+Prior to introducing exit functionality, you should be aware of the limitations.
 
 ## Implementation
 
-1. Add the `{$ExitButton}` template variable in a template
-1. Enable on a page and/or add an Exit Button shortcode to a relevant HTML editor field
+1. Add the `{$ExitButton}` template variable in a template (see the Elemental addition to this module for an example) or
+1. add an Exit Button shortcode to a relevant HTML editor field
+
+Only add one exit button to a page in a consistent location.
 
 ## Documentation
 
-* [Read the documentation page](./docs/en/001_index.md) for implementation details
+* [Read the documentation page](./docs/en/001_index.md) for more implementation details
 
 ## Installation
 

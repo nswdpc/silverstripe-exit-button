@@ -6,6 +6,8 @@ use DNADesign\Elemental\Models\BaseElement;
 use SilverStripe\Control\Controller;
 use SilverStripe\Forms\TextareaField;
 use SilverStripe\Forms\TextField;
+use SilverStripe\ORM\FieldType\DBField;
+use SilverStripe\ORM\FieldType\DBVarchar;
 use SilverStripe\View\ArrayData;
 use SilverStripe\View\Requirements;
 use SilverStripe\View\TemplateGlobalProvider;
@@ -21,25 +23,44 @@ class ExitButton extends ViewableData implements TemplateGlobalProvider {
      * @var string
      * The default URL to open when exit event is hit
      */
-    private static $default_url = 'https://www.google.com/';
+    private static string $default_url = 'https://www.google.com/';
 
     /**
      * @var string
      * The per instance URL to open when exit event is hit
      */
-    private $exitUrl = 'https://www.google.com/';
+    private string $exitUrl = 'https://www.google.com/';
 
     /**
      * @var string
      * id attribute value for this button
      */
-    private $id = '';
+    private string $id = '';
 
     /**
      * @var string
      * Button label
      */
-    private $label = '';
+    private string $label = '';
+
+    /**
+     * @var string
+     * Button label
+     */
+    private static string $default_label = 'Exit now';
+
+    private bool $useEsc = true;
+
+    public function setUseEsc(bool $use): self
+    {
+        $this->useEsc = $use;
+        return $this;
+    }
+
+    public function getUseEsc(): bool
+    {
+        return $this->useEsc;
+    }
 
     /**
      * Set exit URL
@@ -52,8 +73,8 @@ class ExitButton extends ViewableData implements TemplateGlobalProvider {
     /**
      * Get exit URL or use default
      */
-    public function getExitUrl() : ?string {
-        return $this->exitUrl ?? static::config()->get('default_url');
+    public function getExitUrl() : string {
+        return $this->exitUrl !== '' ? $this->exitUrl : static::config()->get('default_url');
     }
 
     /**
@@ -68,7 +89,8 @@ class ExitButton extends ViewableData implements TemplateGlobalProvider {
      * Get id attribute value or create one
      */
     public function getId() : string {
-        return $this->id !== '' ? $this->id : 'exit-button-' . bin2hex(random_bytes(4));
+        $id = \SilverStripe\Core\Convert::raw2htmlid($this->id);
+        return $id !== '' ? $id : 'exit-button-' . bin2hex(random_bytes(4));
     }
 
     /**
@@ -83,7 +105,18 @@ class ExitButton extends ViewableData implements TemplateGlobalProvider {
      * Get label or use default
      */
     public function getLabel() : string {
-        return $this->label !== '' ? $this->label : _t('ExitButton.EXIT_BUTTON_LABEL', 'Exit this page');
+        return $this->label !== '' ? $this->label : $this->getDefaultLabel();
+    }
+
+    public function getDefaultLabel(): string
+    {
+        $default = static::config()->get('default_label');
+        if($default != '') {
+            $default = _t('ExitButton.EXIT_BUTTON_LABEL_DEFAULT', $default);
+        } else {
+            $default = _t('ExitButton.EXIT_BUTTON_LABEL', 'Exit now');
+        }
+        return $default;
     }
 
     /**
@@ -92,8 +125,7 @@ class ExitButton extends ViewableData implements TemplateGlobalProvider {
     public function forTemplate() {
         $id = $this->getId();
         Requirements::javascript('nswdpc/silverstripe-exit-button:client/static/js/exitbutton.js');
-        Requirements::customScript(
-<<<SCRIPT
+        $loaderScript = <<<SCRIPT
 window.addEventListener(
     'DOMContentLoaded',
     function(e) {
@@ -101,12 +133,13 @@ window.addEventListener(
         eb.init(document.getElementById('{$id}')).handle();
     }
 );
-SCRIPT
-        );
+SCRIPT;
+        Requirements::customScript($loaderScript,  'exit-button-loader-for-' . $id);
         $data = ArrayData::create([
-            'Url' => $this->getExitUrl(),
-            'Id' => $id,
-            'Label' => $this->getLabel()
+            'Url' => DBField::create_field(DBVarchar::class, $this->getExitUrl()),
+            'Id' => DBField::create_field(DBVarchar::class, $id),
+            'Label' => DBField::create_field(DBVarchar::class, $this->getLabel()),
+            'UseEscVal' => $this->getUseEsc() ? "1" : "0"
         ]);
         return $this->customise($data)->renderWith(static::class);
     }
@@ -115,12 +148,7 @@ SCRIPT
      * @inheritdoc
      */
     public static function get_global_exit_button() {
-        $controller = Controller::curr();
-        $enabled = false;
-        if($controller && $page = $controller->data()) {
-            $enabled = $page->hasField('EnableExitButton') && $page->EnableExitButton == 1;
-        }
-        if($enabled) {
+        if(static::has_global_exit_button()) {
             return static::create()->setId('global-exit-button')->forTemplate();
         } else {
             return null;
@@ -130,10 +158,23 @@ SCRIPT
     /**
      * @inheritdoc
      */
+    public static function has_global_exit_button() {
+        $controller = Controller::curr();
+        if($controller && $page = $controller->data()) {
+            return $page->hasField('EnableExitButton') && $page->EnableExitButton == 1;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * @inheritdoc
+     */
      public static function get_template_global_variables()
      {
          return [
-             'GlobalExitButton' => 'get_global_exit_button'
+             'GlobalExitButton' => 'get_global_exit_button',
+             'HasGlobalExitButton' => 'has_global_exit_button'
          ];
      }
 
