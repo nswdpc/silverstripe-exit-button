@@ -10,8 +10,8 @@ use SilverStripe\ORM\DataExtension;
  * @property bool $EnableExitButton
  * @extends \SilverStripe\ORM\DataExtension<static>
  */
-class PageSettingsExtension extends DataExtension {
-
+class PageSettingsExtension extends DataExtension
+{
     /**
      * @inheritdoc
      */
@@ -29,7 +29,8 @@ class PageSettingsExtension extends DataExtension {
     /**
      * @inheritdoc
      */
-    public function updateSettingsFields($fields) {
+    public function updateSettingsFields($fields)
+    {
         $fields->addFieldToTab(
             'Root.ExitButton',
             CheckboxField::create(

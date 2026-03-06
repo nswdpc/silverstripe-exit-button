@@ -11,7 +11,6 @@ use SilverStripe\View\SSViewer;
  */
 class ExitButtonTest extends SapphireTest
 {
-
     protected $usesDatabase = false;
 
     protected array $themes = [];
