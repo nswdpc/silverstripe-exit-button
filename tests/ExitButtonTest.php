@@ -33,6 +33,7 @@ class ExitButtonTest extends SapphireTest
     {
         $button = ExitButton::create();
         $button->setId('invalid9\'char;ac&quot;"ter;s');
+
         $id = $button->getId();
         $this->assertEquals('invalid9_char_ac_quot_ter_s', $id);
     }
@@ -67,6 +68,6 @@ class ExitButtonTest extends SapphireTest
         $template = $button->forTemplate();
         $value = $template->getValue();
         $expected = '<div class="exit-button-wrapper"><a id="' . $id . '" class="page-exit" data-url="' . $url . '" href="' . $url . '" rel="nofollow noopener"><span>' . $label . '</span></a></div>';
-        $this->assertEquals($expected, trim($value));
+        $this->assertEquals($expected, trim((string) $value));
     }
 }

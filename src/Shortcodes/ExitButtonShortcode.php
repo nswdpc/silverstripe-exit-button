@@ -20,10 +20,12 @@ class ExitButtonShortcode
         if($url) {
             $button->setExitUrl($url);
         }
+
         $label = $arguments['label'] ?? '';
         if($label) {
             $button->setLabel($label);
         }
+
         return $button->forTemplate();
     }
 }

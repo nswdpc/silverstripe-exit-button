@@ -117,6 +117,7 @@ class ExitButton extends ViewableData implements TemplateGlobalProvider {
         } else {
             $default = _t('ExitButton.EXIT_BUTTON_LABEL', 'Exit now');
         }
+
         return $default;
     }
 

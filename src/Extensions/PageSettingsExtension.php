@@ -7,20 +7,22 @@ use SilverStripe\ORM\DataExtension;
 
 /**
  * Add field for enabling exit button
+ * @property bool $EnableExitButton
+ * @extends \SilverStripe\ORM\DataExtension<static>
  */
 class PageSettingsExtension extends DataExtension {
 
     /**
      * @inheritdoc
      */
-    private static $db = [
+    private static array $db = [
         'EnableExitButton' => 'Boolean'
     ];
 
     /**
      * @inheritdoc
      */
-    private static $defaults = [
+    private static array $defaults = [
         'EnableExitButton' => 0
     ];
 
@@ -40,7 +42,7 @@ class PageSettingsExtension extends DataExtension {
                 _t(
                     'ExitButton.ENABLE_ON_PAGE_DESCRIPTION',
                     'When enabled the exit button will display on the page,'
-                    . ' in a location defined by the website\'s template'
+                    . " in a location defined by the website's template"
                 )
             )
         );
