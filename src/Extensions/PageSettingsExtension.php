@@ -2,8 +2,8 @@
 
 namespace NSWDPC\ExitButton\Extensions;
 
-use Silverstripe\Forms\CheckboxField;
-use Silverstripe\ORM\DataExtension;
+use SilverStripe\Forms\CheckboxField;
+use SilverStripe\ORM\DataExtension;
 
 /**
  * Add field for enabling exit button

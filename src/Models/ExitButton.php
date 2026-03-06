@@ -3,6 +3,7 @@
 namespace NSWDPC\ExitButton\Models;
 
 use DNADesign\Elemental\Models\BaseElement;
+use SilverStripe\CMS\Controllers\ContentController;
 use SilverStripe\Control\Controller;
 use SilverStripe\Forms\TextareaField;
 use SilverStripe\Forms\TextField;
@@ -160,7 +161,7 @@ SCRIPT;
      */
     public static function has_global_exit_button() {
         $controller = Controller::curr();
-        if($controller && $page = $controller->data()) {
+        if($controller && ($controller instanceof ContentController || method_exists($controller, 'data')) && $page = $controller->data()) {
             return $page->hasField('EnableExitButton') && $page->EnableExitButton == 1;
         } else {
             return false;
