@@ -13,7 +13,7 @@ class ExitButtonShortcode
     /**
      * Parse shortcode and return value
      */
-    public static function parse(array $arguments, ?string $content = null, ShortcodeParser $parser = null, ?string $tagName = null)
+    public static function parse(array $arguments, ?string $content = null, ShortcodeParser $parser = null, ?string $tagName = null): string
     {
         $button = ExitButton::create();
         $url = $arguments['url'] ?? '';
