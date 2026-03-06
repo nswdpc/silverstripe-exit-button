@@ -6,16 +6,16 @@ use SilverStripe\CMS\Controllers\ContentController;
 use SilverStripe\Control\Controller;
 use SilverStripe\ORM\FieldType\DBField;
 use SilverStripe\ORM\FieldType\DBVarchar;
-use SilverStripe\View\ArrayData;
+use SilverStripe\Model\ArrayData;
 use SilverStripe\View\Requirements;
 use SilverStripe\View\TemplateGlobalProvider;
-use SilverStripe\View\ViewableData;
+use SilverStripe\Model\ModelData;
 
 /**
  * Provides an exit button model
  * @author James
  */
-class ExitButton extends ViewableData implements TemplateGlobalProvider
+class ExitButton extends ModelData implements TemplateGlobalProvider
 {
     /**
      * @var string
@@ -127,7 +127,7 @@ class ExitButton extends ViewableData implements TemplateGlobalProvider
     /**
      * Return a rendered template for this model
      */
-    public function forTemplate()
+    public function forTemplate(): string
     {
         $id = $this->getId();
         Requirements::javascript('nswdpc/silverstripe-exit-button:client/static/js/exitbutton.js');
