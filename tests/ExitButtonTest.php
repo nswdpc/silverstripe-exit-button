@@ -67,7 +67,7 @@ class ExitButtonTest extends SapphireTest
         $button->setLabel($label);
 
         $value = $button->forTemplate();
-        $expected = '<div class="exit-button-wrapper"><a id="' . $id . '" class="page-exit" data-url="' . $url . '" href="' . $url . '" rel="nofollow noopener"><span>' . $label . '</span></a></div>';
+        $expected = '<div class="exit-button-wrapper"><a id="' . $id . '" class="page-exit" data-url="' . $url . '" href="' . $url . '" rel="nofollow noopener" data-use-esc="1"><span>' . $label . '</span></a></div>';
         $this->assertEquals($expected, trim((string) $value));
     }
 }
