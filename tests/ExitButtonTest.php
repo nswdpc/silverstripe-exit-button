@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace NSWDPC\ExitButton\Tests;
 
 use NSWDPC\ExitButton\Models\ExitButton;
@@ -64,9 +66,8 @@ class ExitButtonTest extends SapphireTest
         $button->setExitUrl($url);
         $button->setLabel($label);
 
-        $template = $button->forTemplate();
-        $value = $template->getValue();
-        $expected = '<div class="exit-button-wrapper"><a id="' . $id . '" class="page-exit" data-url="' . $url . '" href="' . $url . '" rel="nofollow noopener"><span>' . $label . '</span></a></div>';
+        $value = $button->forTemplate();
+        $expected = '<div class="exit-button-wrapper"><a id="' . $id . '" class="page-exit" data-url="' . $url . '" href="' . $url . '" rel="nofollow noopener" data-use-esc="1"><span>' . $label . '</span></a></div>';
         $this->assertEquals($expected, trim((string) $value));
     }
 }

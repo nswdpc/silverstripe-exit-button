@@ -3,14 +3,14 @@
 namespace NSWDPC\ExitButton\Extensions;
 
 use SilverStripe\Forms\CheckboxField;
-use SilverStripe\ORM\DataExtension;
+use SilverStripe\Core\Extension;
 
 /**
  * Add field for enabling exit button
  * @property bool $EnableExitButton
- * @extends \SilverStripe\ORM\DataExtension<static>
+ * @extends \SilverStripe\Core\Extension<static>
  */
-class PageSettingsExtension extends DataExtension
+class PageSettingsExtension extends Extension
 {
     /**
      * @inheritdoc
