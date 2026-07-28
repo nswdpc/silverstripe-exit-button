@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace NSWDPC\ExitButton\Tests;
 
 use NSWDPC\ExitButton\Models\ExitButton;
