@@ -116,12 +116,10 @@ class ExitButton extends ModelData implements TemplateGlobalProvider
     {
         $default = static::config()->get('default_label');
         if ($default != '') {
-            $default = _t('ExitButton.EXIT_BUTTON_LABEL_DEFAULT', $default);
-        } else {
-            $default = _t('ExitButton.EXIT_BUTTON_LABEL', 'Exit now');
+            return _t('ExitButton.EXIT_BUTTON_LABEL_DEFAULT', $default);
         }
 
-        return $default;
+        return _t('ExitButton.EXIT_BUTTON_LABEL', 'Exit now');
     }
 
     /**
@@ -158,9 +156,8 @@ SCRIPT;
     {
         if (static::has_global_exit_button()) {
             return static::create()->setId('global-exit-button')->forTemplate();
-        } else {
-            return null;
         }
+        return null;
     }
 
     /**
@@ -171,9 +168,8 @@ SCRIPT;
         $controller = Controller::curr();
         if ($controller && ($controller instanceof ContentController || method_exists($controller, 'data')) && $page = $controller->data()) {
             return $page->hasField('EnableExitButton') && $page->EnableExitButton == 1;
-        } else {
-            return false;
         }
+        return false;
     }
 
     /**
