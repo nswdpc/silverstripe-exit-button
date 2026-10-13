@@ -28,6 +28,15 @@ class PageSettingsExtension extends Extension
 
     /**
      * @inheritdoc
+     * Remove checkbox from CMS fields
+     */
+    public function updateCmsFields($fields)
+    {
+        $fields->removeByName(['EnableExitButton']);
+    }
+
+    /**
+     * @inheritdoc
      */
     public function updateSettingsFields($fields)
     {
