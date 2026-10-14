@@ -155,7 +155,7 @@ SCRIPT;
     public static function get_global_exit_button()
     {
         if (static::has_global_exit_button()) {
-            return static::create()->setId('global-exit-button')->forTemplate();
+            return static::create()->setId('global-exit-button');
         }
         return null;
     }
