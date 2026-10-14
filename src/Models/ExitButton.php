@@ -155,8 +155,9 @@ SCRIPT;
     public static function get_global_exit_button()
     {
         if (static::has_global_exit_button()) {
-            return static::create()->setId('global-exit-button')->forTemplate();
+            return static::create()->setId('global-exit-button');
         }
+
         return null;
     }
 
@@ -169,6 +170,7 @@ SCRIPT;
         if ($controller && ($controller instanceof ContentController || method_exists($controller, 'data')) && $page = $controller->data()) {
             return $page->hasField('EnableExitButton') && $page->EnableExitButton == 1;
         }
+
         return false;
     }
 
